@@ -1,0 +1,32 @@
+[
+  {
+    "id": 123234,
+    "name": "RTX 3090",
+    "price": 2000,
+    "quantity": 1
+  },
+  {
+    "id": 1232,
+    "name": "RTX 3080",
+    "price": 1500,
+    "quantity": 1
+  },
+  {
+    "id": 22334,
+    "name": "RTX 3070",
+    "price": 1000,
+    "quantity": 1
+  },
+  {
+    "id": 234,
+    "name": "RTX 3060",
+    "price": 499,
+    "quantity": 1
+  },
+  {
+    "id": 334424,
+    "name": "RTX 3050",
+    "price": 299,
+    "quantity": 1
+  }
+]
