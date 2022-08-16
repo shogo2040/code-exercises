@@ -45,6 +45,7 @@ function ShoppingCart() {
                     <td>
                       <input
                         type="number"
+                        min="0"
                         value={product.quantity}
                         onChange={(e) => {
                           console.log(e.target.value);
