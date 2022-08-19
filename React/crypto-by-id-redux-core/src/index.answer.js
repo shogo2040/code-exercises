@@ -1,42 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 // redux core dependencies
 import thunk from "redux-thunk";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 // connect redux to react component.
 import { connect } from "react-redux";
 
-// actions
-const SET_PRICE = "SET_PRICE";
-
-function setPrice(price) {
+const setCryptoIdInput = (cryptoId) => {
   return {
-    type: SET_PRICE,
+    type: "CRYPTO_ID_INPUT",
+    cryptoId,
+  };
+};
+
+const setCryptoPrice = (price) => {
+  return {
+    type: "SET_CRYPTO_PRICE",
     price,
   };
-}
+};
 
-// async actions (this is NOT built into redux).
-// It was added on with applyMiddleware(thunk)
-// redux-thunk is created by the redux team,
-// but it was separated it to be optional.
-
-function getCrypto(id) {
+const fetchCryptoById = (id) => {
   return async (dispatch) => {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`
     );
     const json = await response.json();
-
-    dispatch(setPrice(json[id].usd));
+    dispatch(setCryptoPrice(json[id].usd));
   };
-}
+};
 
-function reducer(state = {}, action) {
+const reducer = (state = { cryptoId: "" }, action) => {
   switch (action.type) {
-    case SET_PRICE:
+    case "CRYPTO_ID_INPUT":
+      return {
+        ...state,
+        cryptoId: action.cryptoId,
+      };
+    case "SET_CRYPTO_PRICE":
       return {
         ...state,
         price: action.price,
@@ -44,54 +47,58 @@ function reducer(state = {}, action) {
     default:
       return state;
   }
+};
+const store = createStore(reducer, applyMiddleware(thunk));
+
+function handleCryptoIdInput(cryptoIdInput, setCryptoIdInput) {
+  setCryptoIdInput(cryptoIdInput);
 }
 
-// create the store. extend redux to support async actions with the middleware "thunk"
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
+    cryptoId: state.cryptoId,
     price: state.price,
   };
-};
+}
 
-const mapDispatchToProps = (dispatch) => {
+function mapDispatchToProps(dispatch) {
   return {
-    getCrypto: (id) => {
-      dispatch(getCrypto(id));
+    setCryptoIdInput: (cryptoId) => {
+      dispatch(setCryptoIdInput(cryptoId));
     },
-    setPrice: () => {
-      dispatch(setPrice());
+    fetchCryptoById: (cryptoId) => {
+      dispatch(fetchCryptoById(cryptoId));
     },
   };
-};
+}
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
-
-function CryptoByIdComponent({ price, getCrypto }) {
-  const [cryptoId, setCryptoId] = useState("");
-
-  function handlerCryptoId(e) {
-    setCryptoId(e.target.value);
-  }
-
+function App({ cryptoId, setCryptoIdInput, fetchCryptoById, price }) {
   return (
     <>
-      <h1>Crypto By Id</h1>
-      <input type="text" onChange={handlerCryptoId} />
-      <button onClick={() => getCrypto(cryptoId)}>Go</button>
-      <h2>Price: {price}</h2>
+      <h1>Crypto by id</h1>
+      <p>{price ? `${cryptoId} - ${price}` : null}</p>
+      <input
+        type="text"
+        onChange={(e) => {
+          handleCryptoIdInput(e.target.value, setCryptoIdInput);
+        }}
+        value={cryptoId}
+      />
+      <button
+        onClick={() => {
+          fetchCryptoById(cryptoId);
+        }}
+      >
+        Go
+      </button>
     </>
   );
 }
 
-const CryptoById = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CryptoByIdComponent);
-
+const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App);
 ReactDOM.render(
   <Provider store={store}>
-    <CryptoById />
+    <AppConnected />
   </Provider>,
   document.getElementById("root")
 );
