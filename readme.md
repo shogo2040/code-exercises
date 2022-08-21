@@ -8,7 +8,12 @@ Usually you only excercise what you need when you work on a project, but project
 
 ## JavaScript
 
+This is the vanilla JavaScript folder.
 Open that folder and follow the instructions. Node.js will be needed.
+
+## React
+
+The React folder has various small React exercises based on using Hooks and Redux Core.
 
 ---
 
