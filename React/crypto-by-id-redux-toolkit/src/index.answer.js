@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 // redux toolkit dependencies
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-// connect react to redux.
-import { connect, Provider } from "react-redux";
+// use hooks to connect react to redux.
+import { useSelector, useDispatch, Provider } from "react-redux";
 
 const cryptoSlice = createSlice({
   name: "crypto",
@@ -40,40 +40,25 @@ const fetchCryptoById = (id) => {
   };
 };
 
-function mapStateToProps(state) {
-  return {
-    cryptoId: state.cryptoId,
-    price: state.price,
-  };
-}
+function App() {
+  const dispatch = useDispatch();
+  const cryptoId = useSelector((state) => state.cryptoId);
+  const price = useSelector((state) => state.price);
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setCryptoIdInput: (cryptoId) => {
-      dispatch(setCryptoIdInput(cryptoId));
-    },
-    fetchCryptoById: (cryptoId) => {
-      dispatch(fetchCryptoById(cryptoId));
-    },
-  };
-}
-
-function App({ cryptoId, setCryptoIdInput, fetchCryptoById, price }) {
   return (
     <>
-      <h1>Crypto by id</h1>
-      <p>{cryptoId}</p>
+      <h1>Crypto by id - with the new RTK</h1>
       <p>{price ? `${cryptoId} - ${price}` : null}</p>
       <input
         type="text"
         onChange={(e) => {
-          setCryptoIdInput(e.target.value);
+          dispatch(setCryptoIdInput(e.target.value));
         }}
         value={cryptoId}
       />
       <button
         onClick={() => {
-          fetchCryptoById(cryptoId);
+          dispatch(fetchCryptoById(cryptoId));
         }}
       >
         Go
@@ -82,10 +67,9 @@ function App({ cryptoId, setCryptoIdInput, fetchCryptoById, price }) {
   );
 }
 
-const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App);
 ReactDOM.render(
   <Provider store={store}>
-    <AppConnected />
+    <App />
   </Provider>,
   document.getElementById("root")
 );
