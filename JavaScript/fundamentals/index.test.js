@@ -162,48 +162,20 @@ describe("es5 and es6 merging of objects", () => {
 
 describe("Async test group", () => {
   /* test url returns the following json: */
-  const dataJson = {
-    posts: [
-      {
-        id: 1,
-        title: "Post 1",
-      },
-      {
-        id: 2,
-        title: "Post 2",
-      },
-      {
-        id: 3,
-        title: "Post 3",
-      },
-    ],
-    comments: [
-      {
-        id: 1,
-        body: "some comment",
-        postId: 1,
-      },
-      {
-        id: 2,
-        body: "some comment",
-        postId: 1,
-      },
-    ],
-    profile: {
-      name: "typicode",
-    },
-  };
-  const dataApi = "https://my-json-server.typicode.com/typicode/demo/db";
+  const dataJson = { "immutable-x": { usd: 0.871581 } };
+  const dataApi =
+    "https://api.coingecko.com/api/v3/simple/price?ids=immutable-x&vs_currencies=usd";
 
+  // since the USD price always changing, just check for crypto key.
   test("test that promise =with then= returns correct data", () => {
     createPromiseFromApiUrlWithThen(dataApi).then((data) => {
-      expect(data).toStrictEqual(dataJson);
+      expect(Object.keys(data)[0]).toEqual(Object.keys(dataJson)[0]);
     });
   });
 
   test("test that promise with async returns correct data", async () => {
     const data = await createPromiseFromApiUrlWithAsync(dataApi);
-    expect(data).toStrictEqual(dataJson);
+    expect(Object.keys(data)[0]).toEqual(Object.keys(dataJson)[0]);
   });
 });
 

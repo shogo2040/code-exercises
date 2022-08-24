@@ -127,7 +127,7 @@ export function mergeUserDataES6(user1, user2) {
 }
 
 /*
-const testDataUrl = 'https://my-json-server.typicode.com/typicode/demo/db';
+const testDataUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=immutable-x&vs_currencies=usd'
 */
 
 const fetch = require("node-fetch");
@@ -156,6 +156,7 @@ export function createPromiseFromApiUrlWithAsync(testDataUrl) {
 }
 
 export function closureThatIncrementsInput(number) {
+  let count = number;
   let counter = number;
   return function () {
     counter = counter + 1;
@@ -163,21 +164,12 @@ export function closureThatIncrementsInput(number) {
   };
 }
 
-/*
-const counter = closureThatIncrementsInput(5);
-console.log(counter())
-console.log(counter())
-console.log(counter())
-*/
-
 // closure To Simluate setAge getAge with age as a private var
 export function PersonCreate() {
   let age;
   return {
-    setAge: (targetAge) => {
-      age = targetAge;
-    },
     getAge: () => age,
+    setAge: (newAge) => (age = newAge),
   };
 }
 
