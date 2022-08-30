@@ -51,8 +51,7 @@ const users = [
 
 */
 export function sortUsersByName(users) {
-  const usersCopy = [...users];
-  return usersCopy.sort((prev, curr) => (prev.name < curr.name ? 1 : -1));
+  return users.sort((prev, curr) => (prev.name < curr.name ? -1 : 1));
 }
 
 export function getUserByName(users, name) {
