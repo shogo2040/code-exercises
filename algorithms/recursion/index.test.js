@@ -1,4 +1,4 @@
-import { sum } from "./index";
+import { sum, euclidsAlgorithm } from "./index";
 
 describe("Sum of array of numbers using recursion", () => {
   const numbers = [1, 2, 5, 15, 22, 23, 99];
@@ -13,5 +13,11 @@ describe("Sum of array of numbers using recursion", () => {
 
   test("3 of 3 - Common use case for non empty array", () => {
     expect(sum([1, 2, 3, 4, 5])).toBe(15);
+  });
+});
+
+describe("Euclid's algorithm - Greatest common divisor", () => {
+  test("Split this land up in the largest equal parts", () => {
+    expect(euclidsAlgorithm(1680, 640)).toBe(80);
   });
 });
