@@ -1,209 +1,59 @@
-/* Timed Test */
-
 // numbers is an array of numbers
 /*
-
 const numbers = [2, 5, 22, 15, 1, 99];
-
 */
 
-// You must use a built in object of the language
-export function getSmallestNumberWithBuiltInObject(numbers) {
-  return Math.min(...numbers);
+// USE ES5 array methods (except for cloning, you can use spread operator)
+
+export function addToEndOfArray(item, arrayInput) {
+  const array = [...arrayInput];
+  const newLength = array.push(item);
+  return array;
 }
 
-// You cannot use the built in object you used above.
-export function getSmallestNumberWithoutBuiltIn(numbers) {
-  return numbers.reduce((prev, curr) => (prev < curr ? prev : curr));
+export function removeFromEndOfArray(arrayInput) {
+  const array = [...arrayInput];
+  const deletedElement = array.pop();
+  return array;
 }
 
-export function calculateAverageToHundredthsDecimal(numbers) {
-  return (numbers.reduce((prev, curr) => prev + curr) / numbers.length).toFixed(
-    2
-  );
+export function addToStartOfArray(item, arrayInput) {
+  const array = [...arrayInput];
+  const newLength = array.unshift(item);
+  return array;
 }
 
-/* users is an array of user objects */
-/*
-
-const users = [
-  {
-    id: 2345,
-    name: 'Rey',
-    company: 'Livingly'
-  },
-  {
-    id: 1342342,
-    name: 'Scott',
-    company: 'Livingly'
-  },
-  {
-    id: 23324432,
-    name: 'Michael',
-    company: 'Livingly',
-  },
-  {
-    id: 324324,
-    name: 'Jian',
-    company: 'CyberDVD',
-  },
-]
-
-*/
-export function sortUsersByName(users) {
-  return users.sort((prev, curr) => (prev.name < curr.name ? -1 : 1));
+export function removeFromStartOfArray(arrayInput) {
+  const array = [...arrayInput];
+  const deletedElement = array.shift();
+  return array;
 }
 
-export function getUserByName(users, name) {
-  return users.find((user) => user.name === name);
+export function insertToIndexOfArray(arrayInput, item, index) {
+  const array = [...arrayInput];
+  const newLength = array.splice(index, 0, item);
+  return array;
 }
 
-export function getUsersByCompany(users, company) {
-  return users.filter((user) => user.company === company);
+export function replaceItemsInArray(
+  arrayInput,
+  index,
+  itemCount,
+  item1,
+  item2
+) {
+  const array = [...arrayInput];
+  const newLength = array.splice(index, itemCount, item1, item2);
+  return array;
 }
 
-/* livinglyUsers and cyberDvdUsers each are an array of user objects */
-/*
-
-const livinglyUsers = [
-  {
-    id: 2345,
-    firstName: 'Rey',
-    company: 'Livingly'
-  },
-  {
-    id: 1342342,
-    firstName: 'Scott',
-    company: 'Livingly'
-  },
-  {
-    id: 23324432,
-    firstName: 'Michael',
-    company: 'Livingly',
-  },
-];
-
-const cyberDvdUsers = [
-  {
-    id: 324324,
-    firstName: 'Jian',
-    company: 'CyberDVD',
-  },
-];
-
-*/
-
-export function mergeUsersES5(users1, users2) {
-  return users1.concat(users2);
+export function removeFromIndexOfArray(arrayInput, index) {
+  const array = [...arrayInput];
+  array.splice(index, 1);
+  return array;
 }
 
-export function mergeUsersES6(users1, users2) {
-  return [...users1, ...users2];
-}
-
-/*
-
-const userData1 = {
-  id: 2345,
-  firstName: 'Rey',
-  company: 'Livingly'
-};
-
-const userData2 = {
-  id: 2345,
-  lastName: 'Arqueza',
-  company: 'Livingly'
-}
-
-*/
-
-export function mergeUserDataES5(user1, user2) {
-  return Object.assign(user1, user2);
-}
-
-export function mergeUserDataES6(user1, user2) {
-  return { ...user1, ...user2 };
-}
-
-/*
-const testDataUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=immutable-x&vs_currencies=usd'
-*/
-
-const fetch = require("node-fetch");
-
-export function createPromiseFromApiUrlWithThen(testDataUrl) {
-  return new Promise((resolve, reject) => {
-    fetch(testDataUrl)
-      .then((response) => response.json())
-      .then((json) => {
-        resolve(json);
-      })
-      .catch((e) => reject(e));
-  });
-}
-
-export function createPromiseFromApiUrlWithAsync(testDataUrl) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await fetch(testDataUrl);
-      const json = await response.json();
-      resolve(json);
-    } catch (e) {
-      reject(e);
-    }
-  });
-}
-
-export function closureThatIncrementsInput(number) {
-  let count = number;
-  let counter = number;
-  return function () {
-    counter = counter + 1;
-    return counter;
-  };
-}
-
-// closure To Simluate setAge getAge with age as a private var
-export function PersonCreate() {
-  let age;
-  return {
-    getAge: () => age,
-    setAge: (newAge) => (age = newAge),
-  };
-}
-
-/*
-const person = PersonCreate();
-person.setAge(5);
-console.log(person.getAge());
-person.setAge(10);
-console.log(person.getAge());
-*/
-// currying:
-// URL creator, the first call you pass the base url. Curry over the pagetype url.
-export function URLCreator(baseUrl) {
-  return function (pageTypeUrl) {
-    return `${baseUrl}${pageTypeUrl}`;
-  };
-}
-
-/*
-const website = URLCreator('https://www.livingly.com');
-const aboutPage = website('/about');
-const contactPage = website('/contact');
-
-const mediaPage = URLCreator('https://www.livinglymedia.com')('/signup');
-console.log(aboutPage);
-console.log(contactPage);
-console.log(mediaPage);
-*/
-
-// recursion:
-// use recursion to implement factorial
-export function factorial(number) {
-  if (number > 1) {
-    return number * factorial(number - 1);
-  } else {
-    return number;
-  }
+export function getSubArray(arrayInput, start, end) {
+  const array = [...arrayInput];
+  return array.slice(start, end + 1);
 }
