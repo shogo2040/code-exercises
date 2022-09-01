@@ -2,10 +2,6 @@
 // get the sum by using recursion
 export function sum(numbers) {}
 
-// Divide & conquer / D&C
-// greatest common divisor (Euclid's algorithm)
-export function euclidsAlgorithm(a, b) {}
-
 // write a recursive function to count the number of items in a list
 // const list = ['carrots', 'lettuce', 'onions', 'beef', 'potatos'];
 export function recursiveCount(list) {}

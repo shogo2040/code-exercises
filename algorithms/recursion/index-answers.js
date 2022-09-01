@@ -15,24 +15,6 @@ export function sum(numbers) {
   return num + sum(numbers);
 }
 
-// Divide & conquer / D&C
-// greatest common divisor (Euclid's algorithm)
-export function euclidsAlgorithm(a, b) {
-  if (a * 2 === b) {
-    return a;
-  }
-
-  if (b * 2 === a) {
-    return b;
-  }
-
-  if (a > b) {
-    return euclidsAlgorithm(b, a - b);
-  } else {
-    return euclidsAlgorithm(a, b - a);
-  }
-}
-
 // write a recursive function to count the number of items in a list
 // const list = ['carrots', 'lettuce', 'onions', 'beef', 'potatos'];
 export function recursiveCount(list) {
