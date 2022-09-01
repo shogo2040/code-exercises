@@ -1,0 +1,16 @@
+{
+  "name": "Fundamentals",
+  "version": "1.0.0",
+  "description": "Practice JavaScript Fundamentals",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
+    "jest": "^28.1.3",
+    "node-fetch": "^2.6.7"
+  }
+}
