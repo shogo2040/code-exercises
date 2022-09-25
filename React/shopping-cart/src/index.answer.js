@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-function ShoppingCart() {
-  const [products, setProducts] = useState([]);
-  const [subtotals, setSubtotals] = useState([]);
+function App() {
+  const [products, setProducts] = useState();
 
-  useEffect(async () => {
-    const response = await fetch("http://localhost:3000/products.json");
-    const json = await response.json();
-    setProducts(json);
-    setSubtotals(json.map((product) => product.quantity * product.price));
-  }, []);
+  function handleQuantity(e, id) {
+    const quantity = e.target.value;
+    const productsCopy = [...products];
+    const updatedProducts = productsCopy.map((product) => {
+      if (product.id === id) {
+        const subTotal = product.price * quantity;
 
-  function handleProductQuantity(quantity, productId) {
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId) {
         return {
           ...product,
-          quantity: parseInt(quantity),
+          subTotal,
+          quantity,
         };
       }
 
@@ -25,55 +22,66 @@ function ShoppingCart() {
     });
 
     setProducts(updatedProducts);
-    setSubtotals(
-      updatedProducts.map((product) => product.quantity * product.price)
-    );
   }
+  const total = products && products.reduce((acc, b) => acc + b.subTotal, 0);
+
+  useEffect(async () => {
+    const response = await fetch("/products.json");
+    const json = await response.json();
+    const updatedProducts = json.map((product) => {
+      const subTotal = product.price * product.quantity;
+      return {
+        ...product,
+        subTotal,
+      };
+    });
+    setProducts(updatedProducts);
+  }, []);
 
   return (
-    <>
+    <div>
       {products ? (
         <>
-          <h1>Shopping Cart</h1>
-          <table border="1" cellPadding={5}>
+          <table border="1" cellPadding="5">
+            <thead>
+              <tr>
+                <td>id</td>
+                <td>product name</td>
+                <td>price</td>
+                <td>subtotal</td>
+                <td>quantity</td>
+              </tr>
+            </thead>
             <tbody>
-              {products.map((product, index) => {
+              {products.map((product) => {
                 return (
                   <tr key={product.id}>
+                    <td>{product.id}</td>
                     <td>{product.name}</td>
                     <td>{product.price}</td>
+                    <td>{product.subTotal}</td>
                     <td>
                       <input
-                        type="number"
-                        min="0"
-                        value={product.quantity}
                         onChange={(e) => {
-                          console.log(e.target.value);
-                          handleProductQuantity(e.target.value, product.id);
+                          handleQuantity(e, product.id);
                         }}
+                        type="number"
+                        value={product.quantity}
+                        min={0}
                       />
                     </td>
-                    <td>{subtotals[index]}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+          <p>Total: {total}</p>
         </>
       ) : (
-        <h1>...loading</h1>
+        <p>loading...</p>
       )}
-      {subtotals ? (
-        <p>
-          Grand Total:{" "}
-          <strong>
-            {subtotals &&
-              subtotals.length > 0 &&
-              subtotals.reduce((prev, curr) => prev + curr)}
-          </strong>
-        </p>
-      ) : null}
-    </>
+    </div>
   );
 }
-ReactDOM.render(<ShoppingCart />, document.getElementById("root"));
+
+ReactDOM.render(<App />, document.getElementById("root"));
