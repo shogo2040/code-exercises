@@ -1,6 +1,8 @@
-# Todo
+# Redux without Redux
 
-Build a barebones todo app in React.
+Instead of Redux, use useReducer, useContext, and createContext.
+
+Use the sliders that are in place to get values X and Y and display the sum in the Display component.
 
 Edit the file index.js
 When you are done, compare your answer to index.answer.js
